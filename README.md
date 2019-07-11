@@ -1,20 +1,44 @@
 # Promachos
 
-Chris McPherson and Sherice Mayer
+Copyright (c) 2019 Chris McPherson and Sharice Mayer
+chris@techfocus.net
+sharice.mayer@gmail.com
 
-Promachos: Automated Pet Deterrent 
+## Explanation of what the program is and does  
 
-Promachos Automated Pet Deterrent system is a stationary turret designed to fire a non-lethal projectile at a cat or dog if
-it were to be in restricted areas (e.g. countertops). This is accomplished using a neural network to classify images
-from a video stream and determine if a pet is where it doesn't belong. This project is written for use with a web camera, Raspberry Pi
-and a set of servos to fire a projectiles. The running this project is written in Python and Rust which is dependent on Keras,
-Tensorflow, OpenCV, and ImageZMQ
+_Promachos: Automated Pet Deterrent_ 
 
-A description of how to build, install and run your program, or links to documents elsewhere in your project that describe this
-TBD
+Promachos Automated Pet Deterrent system is software designed to run on
+a stationary turret, which is designed to fire a non-lethal projectile at a cat or dog 
+if it enters a restricted area (e.g. countertop).  
+This is accomplished using a neural network to classify images
+from a video stream and determine if a pet is where it doesn't belong.  
+This project is written in Rust and Python, and is dependent on 
+Keras, Tensorflow, OpenCV, and ImageZMQ). 
+The project was designed using a web camera, Raspberry Pi, 
+and a set of servos to fire projectiles.  
 
+## Build and Run  
+Build and run (install?)this program with `insertruncommandhere`
+passing in arguments listed here.  
+Insert links to documents elsewhere here that describe important things.  
+TBD  
+   
+For example:  
 An example illustrating the operation of your code
 TBD
 
-License information, including a pointer to the LICENSE file
-link to license
+## Bugs, Defects, Failing Tests, etc
+
+Bugs, Defects, and Failing Test information goes here as needed.
+The program is currently completely non-functional. 
+
+## License
+
+This program is licensed under the "MIT License".  
+Please see the file `LICENSE` in the source distribution of this
+software for license terms.  
+
+## Acknowledgements 
+Thanks to professor Bart Massey for project encouragement.  
+
