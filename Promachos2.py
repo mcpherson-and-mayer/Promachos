@@ -1,3 +1,8 @@
+# Copyright © Chris McPherson and Sharice Mayer
+# [This program is licensed under the "MIT License"]
+# Please see the file LICENSE in the source 
+# distribution of this software for license terms
+
 ######## Picamera Object Detection Using Tensorflow Classifier #########
 #
 # Author: Chris McPherson and Sharice Mayer originally based on work by Evan Juras
