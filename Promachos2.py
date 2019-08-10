@@ -24,6 +24,8 @@
 #sys.path
 #sys.path.insert(0, '~/tensorflow1/models/research/object_detection')
 
+# The lines with calls to rust are # 39# 138 # 185-186 #213
+
 # Import packages
 import os
 import cv2
@@ -34,14 +36,15 @@ import tensorflow as tf
 import argparse
 import sys
 import math
+#import camera_control_lib as ccont
 
 # Set up camera constants -- RESOLUTION
 #IM_WIDTH = 320
 #IM_HEIGHT = 240
 #IM_WIDTH = 640    #Use smaller resolution for original 1280 x 720
 #IM_HEIGHT = 480   #slightly faster framerate
-IM_WIDTH = 1280
-IM_HEIGHT = 720
+IM_WIDTH = 640
+IM_HEIGHT = 480
     
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
@@ -132,8 +135,8 @@ detect_counter = 0
 object_coord = []
 obj_x = None
 obj_y = None
-Camera_x = IM_WIDTH/2
-Camera_y = IM_HEIGHT/2
+#ccont.set_origin(IM_WIDTH/2,IM_HEIGHT/2)
+
 
 ### USBcamera ###
 if camera_type == 'usb':
@@ -179,6 +182,8 @@ if camera_type == 'usb':
             if classes[0][1] == 44:
                 x = int(((boxes[0][1][1]+boxes[0][1][3])/2)*IM_WIDTH)
                 y = int(((boxes[0][1][0]+boxes[0][1][2])/2)*IM_HEIGHT)
+            #ccont.set_new_x(x)
+            #ccont.set_new_y(y)
             object_coord.append([x,y])
             detect_flag = True
             detect_counter = detect_limit
@@ -204,6 +209,7 @@ if camera_type == 'usb':
                     detect_flag = False
                     object_coord = []
                     detect_counter = 0
+                    #ccont.return_to_origin()
             elif detect_flag == True:
                 print("bottle not detected")
             else:
