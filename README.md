@@ -24,6 +24,7 @@ Checkout  and download instructions here.
 Prerequisites for build here.  
 Build and run (install?)this program with `insertruncommandhere`
 passing in arguments listed here.  
+*Install folder contains build scripts for opencv pieces*
 Installation instructions here. 
 Insert links to documents elsewhere here that describe important things.  
 TBD  
