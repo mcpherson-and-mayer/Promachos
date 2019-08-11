@@ -1,8 +1,3 @@
-# Copyright © Chris McPherson and Sharice Mayer
-# [This program is licensed under the "MIT License"]
-# Please see the file LICENSE in the source 
-# distribution of this software for license terms
-
 ######## Picamera Object Detection Using Tensorflow Classifier #########
 #
 # Author: Chris McPherson and Sharice Mayer originally based on work by Evan Juras
@@ -29,6 +24,8 @@
 #sys.path
 #sys.path.insert(0, '~/tensorflow1/models/research/object_detection')
 
+# The lines with calls to rust are # 39# 138 # 185-186 #213
+
 # Import packages
 import os
 import cv2
@@ -39,15 +36,18 @@ import tensorflow as tf
 import argparse
 import sys
 import math
+#import camera_control_lib as ccont
 
 # Set up camera constants -- RESOLUTION
 #IM_WIDTH = 320
 #IM_HEIGHT = 240
 #IM_WIDTH = 640    #Use smaller resolution for original 1280 x 720
 #IM_HEIGHT = 480   #slightly faster framerate
-IM_WIDTH = 1280
-IM_HEIGHT = 720
-    
+IM_WIDTH = 640
+IM_HEIGHT = 480
+
+
+
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
 camera_type = 'usb'
@@ -137,8 +137,18 @@ detect_counter = 0
 object_coord = []
 obj_x = None
 obj_y = None
-Camera_x = IM_WIDTH/2
-Camera_y = IM_HEIGHT/2
+#ccont.set_origin(IM_WIDTH/2,IM_HEIGHT/2)
+
+anchor_flag = False
+anchor_x = None
+anchor_y = None
+anchor_code = 76 #keyboard
+origin_x = 0 #IM_WIDTH/2
+origin_y = 0#IM_HEIGHT/2
+cam_x = origin_x
+cam_y = origin_y
+home = True
+tolerance = 100
 
 ### USBcamera ###
 if camera_type == 'usb':
@@ -176,18 +186,51 @@ if camera_type == 'usb':
         cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(30,50),font,1,(255,255,0),2,cv2.LINE_AA)
         print(classes[0][0],classes[0][1], classes[0][2])
 
+        # setting anchor
+        if anchor_flag == False and int(classes[0][0]) == anchor_code:
+            anchor_x = int(((boxes[0][0][1]+boxes[0][0][3])/2)*IM_WIDTH)
+            anchor_y = int(((boxes[0][0][0]+boxes[0][0][2])/2)*IM_HEIGHT)
+            anchor_flag = True
+
+        #using anchor to find camera coordinates
+        if anchor_flag == True:
+            if classes[0][2] == anchor_code:
+                new_anchor_x = int(((boxes[0][2][1]+boxes[0][2][3])/2)*IM_WIDTH)
+                new_anchor_y = int(((boxes[0][2][0]+boxes[0][2][2])/2)*IM_HEIGHT)
+            if classes[0][1] == anchor_code:
+                new_anchor_x = int(((boxes[0][1][1]+boxes[0][1][3])/2)*IM_WIDTH)
+                new_anchor_y = int(((boxes[0][1][0]+boxes[0][1][2])/2)*IM_HEIGHT)
+            if classes[0][0] == anchor_code:
+                new_anchor_x = int(((boxes[0][0][1]+boxes[0][0][3])/2)*IM_WIDTH)
+                new_anchor_y = int(((boxes[0][0][0]+boxes[0][0][2])/2)*IM_HEIGHT)
+            
+            delta_x = new_anchor_x - anchor_x
+            delta_y = new_anchor_y - anchor_y
+            cam_x += delta_x
+            cam_y += delta_y
+            anchor_x = new_anchor_x
+            anchor_y = new_anchor_y
+            #print(cam_x, cam_y)
+
+        if cam_x > tolerance or cam_y > tolerance or cam_x < -tolerance or cam_y < -tolerance:
+            home = False
+        else:
+            home = True
+
         # checking for specific class
-        if int(classes[0][0]) == 44 or int(classes[0][1]) == 44: #87 is scizzors class
+        if int(classes[0][0]) == 44 or int(classes[0][1]) == 44: #44 is water bottle class
             if classes[0][0] == 44:
                 x = int(((boxes[0][0][1]+boxes[0][0][3])/2)*IM_WIDTH)
                 y = int(((boxes[0][0][0]+boxes[0][0][2])/2)*IM_HEIGHT)
             if classes[0][1] == 44:
                 x = int(((boxes[0][1][1]+boxes[0][1][3])/2)*IM_WIDTH)
                 y = int(((boxes[0][1][0]+boxes[0][1][2])/2)*IM_HEIGHT)
+            #ccont.set_new_x(x)
+            #ccont.set_new_y(y)
             object_coord.append([x,y])
             detect_flag = True
             detect_counter = detect_limit
-            # center of scizzors frame
+            # center of object frame
             cv2.circle(frame,(x,y),2,(0,255,0),-1) #circle to find (0,0)
             dist = math.sqrt((x - origin_x )**2 + (y - origin_y)**2)
             if object_coord != []:
@@ -209,10 +252,14 @@ if camera_type == 'usb':
                     detect_flag = False
                     object_coord = []
                     detect_counter = 0
+                    #ccont.return_to_origin()
             elif detect_flag == True:
                 print("bottle not detected")
             else:
                 print("no object found")
+                if home == False:
+                    print("returning home")
+                    print(str(-cam_x),  str(-cam_y))
             
         # draw circle in center of camera frame
         cv2.circle(frame,(origin_x,origin_y),4,(0,0,255),-1) #circle to find (0,0)
@@ -226,9 +273,9 @@ if camera_type == 'usb':
 
         # Press 'q' to quit
         if cv2.waitKey(1) == ord('q'):
-            print("classes", classes)
-            print("scores", scores)
-            print("boxes", boxes)
+            #print("classes", classes)
+            #print("scores", scores)
+            #print("boxes", boxes)
             break
 
     camera.release()
