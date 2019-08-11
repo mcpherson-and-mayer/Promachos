@@ -148,6 +148,7 @@ origin_y = 0#IM_HEIGHT/2
 cam_x = origin_x
 cam_y = origin_y
 home = True
+tolerance = 100
 
 ### USBcamera ###
 if camera_type == 'usb':
@@ -211,7 +212,7 @@ if camera_type == 'usb':
             anchor_y = new_anchor_y
             #print(cam_x, cam_y)
 
-        if cam_x > 10 or cam_y > 10 or cam_x < -10 or cam_y < -10:
+        if cam_x > tolerance or cam_y > tolerance or cam_x < -tolerance or cam_y < -tolerance:
             home = False
         else:
             home = True
@@ -272,9 +273,9 @@ if camera_type == 'usb':
 
         # Press 'q' to quit
         if cv2.waitKey(1) == ord('q'):
-            print("classes", classes)
-            print("scores", scores)
-            print("boxes", boxes)
+            #print("classes", classes)
+            #print("scores", scores)
+            #print("boxes", boxes)
             break
 
     camera.release()
