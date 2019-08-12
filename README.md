@@ -13,15 +13,28 @@ a stationary turret, which is designed to fire a non-lethal projectile at a cat 
 if it enters a restricted area (e.g. countertop).  
 This is accomplished using a neural network to classify images
 from a video stream and determine if a pet is where it doesn't belong.  
-This project is written in Rust and Python, and is dependent on 
-Keras, Tensorflow, OpenCV, and ImageZMQ.  
+This project is written in Rust and Python, and is dependent on Tensorflow, OpenCV and Protobuf.  
 The project was designed using a web camera, Raspberry Pi, 
 and a set of servos to pan the camera (and eventually fire projectiles).  
 [Currently servo system uses RadioshackRobotics kits+Arduino Uno R3]
 
 ## Build and Run  
+Promachos is in development for the Raspberry pi 3 or 4. 
+The scripts written are based on a fresh install of Raspbian Stretch
+
+Once the repository is cloned, a set of scripts are in the 
+install folder with a specific to install all the prerequisites
+
+The first script checks for system, program updates, and installs vim
+$cd install
+./00-vimscript.sh$
+
+After a reboot
+
+
 Checkout  and download instructions here.  
 Prerequisites for build here.  
+
 Build and run (install?)this program with `insertruncommandhere`
 passing in arguments listed here.  
 *Install folder contains build scripts for opencv pieces*
