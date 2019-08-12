@@ -23,17 +23,9 @@ Promachos is in development for the Raspberry pi 3 or 4.
 The scripts written are based on a fresh install of Raspbian Stretch
 
 Once the repository is cloned, a set of scripts are in the 
-install folder with a specific to install all the prerequisites
+install folder with a specific to install all the prerequisites. 
+Currently the scripts are in the testing phase.
 
-The first script checks for system, program updates, and installs vim
-$cd install
-./00-vimscript.sh$
-
-After a reboot
-
-
-Checkout  and download instructions here.  
-Prerequisites for build here.  
 
 Build and run (install?)this program with `insertruncommandhere`
 passing in arguments listed here.  
