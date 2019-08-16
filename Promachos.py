@@ -11,14 +11,6 @@
 # of identifying a pair of scissors and giving the x,y coordinants relative to the 
 # center of the frame as well as the distance
 
-## Some of the code is copied from Google's example at
-## https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb
-
-## and some is copied from Dat Tran's example at
-## https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
-
-## but I changed it to make it more understandable to me.
-
 #test imports
 #import sys
 #sys.path
@@ -45,7 +37,6 @@ import math
 #IM_HEIGHT = 480   #slightly faster framerate
 IM_WIDTH = 640
 IM_HEIGHT = 480
-
 
 
 # Select camera type (if user enters --usbcam when calling this script,
@@ -184,7 +175,6 @@ if camera_type == 'usb':
             min_score_thresh=0.55)
         
         cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(30,50),font,1,(255,255,0),2,cv2.LINE_AA)
-        print(classes[0][0],classes[0][1], classes[0][2])
 
         # setting anchor
         if anchor_flag == False and int(classes[0][0]) == anchor_code:
@@ -256,7 +246,7 @@ if camera_type == 'usb':
             elif detect_flag == True:
                 print("bottle not detected")
             else:
-                print("no object found")
+                print("target object not found")
                 if home == False:
                     print("returning home")
                     print(str(-cam_x),  str(-cam_y))
