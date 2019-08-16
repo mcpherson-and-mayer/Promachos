@@ -90,9 +90,13 @@ wget http://download.tensorflow.org/models/object_detection/ssdlite_mobilenet_v2
 tar -xzvf ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz
 ```
 
-And that's it, in order to run Promachos.
+And that's it, in order to run Promachos. 
 ```
 python3 Promachos.py
+```
+As a default it runs a usb camera. A picamera may be used with the arguement --picam
+```
+python3 Promachos.py --picam
 ```
 
 ## Bugs, Defects, Failing Tests, etc  
