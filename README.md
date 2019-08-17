@@ -4,25 +4,46 @@ Copyright © 2019 Chris McPherson and Sharice Mayer
 chris@techfocus.net  
 mayers.research@gmail.com  
 
-The work done by this project extends from Tutorial on setting up the object detection API by Edje Electronics 
 
 _Promachos: Automated Pet Deterrent_ 
 
 Promachos Automated Pet Deterrent system is software designed to run on
 a stationary turret, which is designed to fire a non-lethal projectile at a cat or dog 
-if it enters a restricted area (e.g. countertop).  
+if it enters a restricted area (e.g. countertop).
 This is accomplished using a neural network to classify images
 from a video stream and determine if a pet is where it doesn't belong.  
-This project is written in Rust and Python, and is dependent on Tensorflow, OpenCV and Protobuf.  
-The project was designed using a web camera, Raspberry Pi, 
-and a set of servos to pan the camera (and eventually fire projectiles).  
-[Currently servo system uses RadioshackRobotics kits+Arduino Uno R3]
+
+The software for this project extends a Tutorial for setting up an object detection API 
+by Edje Electronics, but was written using C, C++, and Rust for hardware control and 
+Python for image recognition and tracking. 
+The software is also dependent on Tensorflow, OpenCV and Protobuf.  
+
+The 'turret' hardware for this project was designed using:
+Program Control:  
+-  Raspberry Pi 4 - 4GB(for improved processing speed) 
+-  32GB MicroSD card containing a fresh NOOBS v3.1 install for Raspian Buster OS 
+Camera:  
+-  Logitech C920S HD Pro Webcam (any Raspberry-Pi4 compatible webcam will do) 
+LED Directional Indicators _For GPIO Testing - Optional_:
+-  Various Colored LED lights (used 7 in the testing code)
+-  220 Ohm Resistors (used 5, but is dependent on individual configuration used)
+-  Breadboard (used full-size, but smaller size is fine)
+-  Jumper Wires (used 12, but is dependent on the individual configuration used)
+Camera Movement:  
+-  Servo system for panning the camera(and eventually fire projectiles)[Our components listed below]  
+_NOTE: Currently the servo system is an independently operating entity from the rest of the project, and was used to manually move the cameras in response to Camera input for testing. *This piece is not required to build and use the software*. Future builds will include a more cohesive option to communicate with the image recognition and tracking software, and move autonomously in response (Ideally we plan to use Rust FFI between servos and pi so no Arduino is required, and have stubbed out some code to begin this piece of the program)_  
+- RadioShackRobotics Starter Kit _Loosely used Line-following base build_
+- RadioShack Make:it Add-On Kit 2 _Loosely used Surveillance build_
+- IR Remote Control
+- Arduino Uno R3 _Required for Starter Kit Build_
+_NOTE: The operation of this servo system required using the Arduino IDE to build the program for servo behavior_  
+
 
 ## Build and Run  
-Promachos is in development for the Raspberry pi 3 or 4. 
+Promachos is in development for the Raspberry Pi 4, but has been tested and built successfully on the Raspberry Pi 3 as well. 
 The scripts written are based on a fresh install of Raspbian Stretch
 
-In order for Promachos to work either a picamera is require. It must be enabled in the Rasperry pi configuration menue
+In order for Promachos to work, either a picamera is require. It must be enabled in the Rasperry pi configuration menue
 If git is not installed then the repo can be downloaded as a zip file or cloned from the command line. Once the repo is cloned or extracted, there is a set of scripts are in the install folder with a specifics scripts to install the prerequisites. 
 
 ```
