@@ -170,4 +170,7 @@ raspberry pi - tensorflow object detection.
 Thank you to Docker for their install instructions:
 https://docs.docker.com/install/linux/docker-ce/debian/
 
+Thank you to Bruno Rocha for his guidance with FFI and cpython:
+https://developers.redhat.com/blog/2017/11/16/speed-python-using-rust/
+
 

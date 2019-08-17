@@ -1,5 +1,5 @@
 [package]
-name = "gpio_rust"
+name = "promachos"
 version = "0.1.0"
 authors = ["Promachos <shepherd.sharice@gmail.com>"]
 edition = "2018"
@@ -7,5 +7,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-#promachos = { path = ".." }
 rust_gpiozero = "0.2.0"
+libc = "0.2"
+cpython = "0.2"
+
+#[lib]
+#name = "promachosffilib"
+#crate-type = ["dylib"]
+
