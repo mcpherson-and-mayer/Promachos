@@ -38,6 +38,6 @@ sudo apt-get install -y python3-opencv
 
 # Run next script:
 # Install protobuf
-#sudo sh 04-protobufscript.py
+#sudo sh 04-protobufscript.sh
 
 

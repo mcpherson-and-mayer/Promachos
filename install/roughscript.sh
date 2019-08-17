@@ -353,7 +353,7 @@ printf "\n"
 ###################################################################################################
 
 #######
-# 03-opencvscript.py
+# 03-opencvscript.sh
 #######
 
 # update and upgrade with apt-get before doing anything
@@ -392,13 +392,13 @@ sudo apt-get install -y python3-opencv
 
 # Run next script:
 # Install protobuf
-#sudo sh 04-protobufscript.py
+#sudo sh 04-protobufscript.sh
 
 ###################################################################################################
 ###################################################################################################
 
 #######
-# 04-protobufscript.py
+# 04-protobufscript.sh
 #######
 
 printf "\n"
