@@ -198,7 +198,15 @@ tar -xzvf ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz
 ```
 
 
-Now we need to build the rust package. I made a make file so this part is easy:  
+
+### Let's Run it!  
+
+
+_*Now we can finally run Promachos!*_  
+
+
+First we need to build the rust package. This builds files that can run LED lights(and eventially motors). I made a make file so this part is easy:  
+
 
 From the Promachos Project Folder Run:   
 
@@ -208,8 +216,7 @@ cargo run --release
 ```
 
 
-Now we can finally run Promachos!
-From the `tensorflow/models/research/object_detection` folder location(The same one `Promachos.py` is currently located):  
+Now run the python file! From the `tensorflow/models/research/object_detection` folder location(The same one `Promachos.py` is currently located):  
 
 
 Run:    
@@ -220,11 +227,12 @@ python3 Promachos.py
 
 
 _NOTE: As a default it runs a usb camera. A picamera may be used instead with the arguement --picam_
-ex:    
+Alternatively you can Run:    
 
 ```
 python3 Promachos.py --picam
 ```
+
 
 
 Example of running the program:  
