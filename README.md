@@ -5,7 +5,7 @@ chris@techfocus.net
 mayers.research@gmail.com  
 
 
-_Promachos: Automated Pet Deterrent_ 
+_*Promachos: Automated Pet Deterrent*_ 
 
 Promachos Automated Pet Deterrent system is software designed to run on
 a stationary turret, which is designed to fire a non-lethal projectile at a cat or dog 
@@ -18,111 +18,233 @@ by Edje Electronics, but was written using C, C++, and Rust for hardware control
 Python for image recognition and tracking. 
 The software is also dependent on Tensorflow, OpenCV and Protobuf.  
 
-The 'turret' hardware for this project was designed using:
+The 'turret' hardware for this project was designed using:  
+
 Program Control:  
 -  Raspberry Pi 4 - 4GB(for improved processing speed) 
--  32GB MicroSD card containing a fresh NOOBS v3.1 install for Raspian Buster OS 
+-  32GB MicroSD card containing a fresh NOOBS v3.1 install for Raspian Buster OS  
+
 Camera:  
--  Logitech C920S HD Pro Webcam (any Raspberry-Pi4 compatible webcam will do) 
-LED Directional Indicators _For GPIO Testing - Optional_:
+-  Logitech C920S HD Pro Webcam (any Raspberry-Pi4 compatible webcam will do)   
+
+LED Directional Indicators _For GPIO Testing - Optional_:  
 -  Various Colored LED lights (used 7 in the testing code)
 -  220 Ohm Resistors (used 5, but is dependent on individual configuration used)
 -  Breadboard (used full-size, but smaller size is fine)
--  Jumper Wires (used 12, but is dependent on the individual configuration used)
+-  Jumper Wires (used 12, but is dependent on the individual configuration used)  
+
 Camera Movement:  
 -  Servo system for panning the camera(and eventually fire projectiles)[Our components listed below]  
 _NOTE: Currently the servo system is an independently operating entity from the rest of the project, and was used to manually move the cameras in response to Camera input for testing. *This piece is not required to build and use the software*. Future builds will include a more cohesive option to communicate with the image recognition and tracking software, and move autonomously in response (Ideally we plan to use Rust FFI between servos and pi so no Arduino is required, and have stubbed out some code to begin this piece of the program)_  
-- RadioShackRobotics Starter Kit _Loosely used Line-following base build_
-- RadioShack Make:it Add-On Kit 2 _Loosely used Surveillance build_
-- IR Remote Control
-- Arduino Uno R3 _Required for Starter Kit Build_
-_NOTE: The operation of this servo system required using the Arduino IDE to build the program for servo behavior_  
+
+- RadioShackRobotics Starter Kit _Loosely used Line-following base build_  
+- RadioShack Make:it Add-On Kit 2 _Loosely used Surveillance build_  
+- IR Remote Control  
+- Arduino Uno R3 _Required for Starter Kit Build_   
+_NOTE: The operation of this servo system required using the Arduino IDE to build the program for servo behavior_   
 
 
-## Build and Run  
+
+## Build and Run   
+
 Promachos is in development for the Raspberry Pi 4, but has been tested and built successfully on the Raspberry Pi 3 as well. 
-The scripts written are based on a fresh install of Raspbian Stretch
+The scripts written are based on a fresh install of Raspbian Buster using NOOBS v3.1.
 
-In order for Promachos to work, either a picamera is require. It must be enabled in the Rasperry pi configuration menue
-If git is not installed then the repo can be downloaded as a zip file or cloned from the command line. Once the repo is cloned or extracted, there is a set of scripts are in the install folder with a specifics scripts to install the prerequisites. 
+### Pre-Requisite Software Installs: Tensorflow + OpenCV + Protobuf   
+
+In order for Promachos to work, either a picamera or webcam is required. 
+The Camera option must be enabled in the Rasperry pi configuration menu.  
+Here's a link if you're unsure how to do so:   
+`https://www.raspberrypi.org/documentation/configuration/camera.md`    
+
+If git is not installed on your pi, this repo can still be downloaded as a zip file or cloned from the command line.  
+
+Once this repo is cloned or extracted, there are a set of scripts in the `install` folder, which can be run in order to help bootstrap your pi with all the pre-requisites necessary for Promachos to run.  
+
+
+1.   
+To begin with, we recommend you install your favorite text editor(since we don't love nano).
+We chose vim, so we've included it as an optional script. This script updates the system and currently installed packages before installing vim.   
+
+
+To Run:  
+*NOTE:THIS SCRIPT WILL REBOOT YOUR PI AT THE END OF THE SCRIPT*  
 
 ```
-00-vimscript.sh
+sudo sh optional-vimscript.sh
 ```
-Is an optional script which updates the the system and currently installed packages as well as installs vim. There are two scripts for installing the prerequisites for tensorflow. 
+
+
+2.   
+Next, install tensorflow. There are two scripts available for installing prerequisites for tensorflow depending on what your system preferences are. If you are familiar with using containers, 01opt-dockerscript.sh is slightly more advanced, and may require decent in-depth knowledge of your system to debugi if you run into issues. We ran into several issues while trying this method, and it appears that there are a myriad of bugs that completely depend on your particular OS configuration and othersystem  software. For this reason, if you are at all unsure, we recommend using the pip install, with 01opt-pipscript.sh instead.   
+_NOTE: There are TWO scripts required to go the docker route, and only one for the pip route to tensorflow.  
+ALSO: Although the Docker Route takes a significant amount of time, the pip option still took awhile, although noticeably less time. Try to be patient :)_   
+
+
+To Install Using Docker:  
+*NOTE:THE DOCKER SCRIPT WILL REBOOT YOUR PI AT THE END OF THE SCRIPT*  
+
 ```
-01opt-dockerscript.sh
+sudo sh 01opt-dockerscript.sh
+
+sudo sh 02-tensorflowscript.sh
 ```
-or 
+
+
+*OR* To Install Using Pip:  
+
 ```
-01opt-pipscript.sh
+sudo sh 01opt-pipscript.sh
 ```
-both scripts had some errors along the way however, *01opt-script.sh* was less error prone and only required the command
+
+
+_NOTE: We only ran into a single error while running *01opt-pipscript.sh*, involving distutils being unable to uninstall wrapt to update it._   
+This command fixed the issue for us:  
+
 ```
 sudo pip install -U --ignore-installed wrapt
 ```
-should fix it.
-Next run 
+
+
+3.   
+Next, we need to install OpenCV. This script was fairly short. This method worked for us after several very frustrating and unsuccessful attempts to use the official OpenCV site instructions for the Raspberry Pi, so we were glad this worked easily instead.  
+  
+
+To Run:  
+
 ```
-02-tensorflowscript.sh
+sudo sh 03-opencvscript.sh
 ```
-This script takes takes little while to run so please be patient
-Next run 
+
+
+4.   
+Next, we need to install protobuf. Although there are more updated protobuf versions available, this is the most recent version that actually compiled. We tried installing several other versions over many long hours, since this install takes a hefty amount of time each try, and for us every versin past this one was unsuccessful.    
+_This install takes *quite* a while to install as well... Enough time to eat and go to coffee..._  
+
+
+To Run:   
+*NOTE:THIS SCRIPT WILL REBOOT YOUR PI AT THE END OF THE SCRIPT*  
+
 ```
-03-opencvscript.sh
+sudo sh 04-protobufscript.sh
 ```
-The next script will take quite a while to install protobuf. 
-```
-04-protobuf.sh
-```
-Once the protobuf script finishes running
-```
-sudo reboot
-```
+
+
+
+### Get Tensorflow Models for Object Detection  
+
+Now we need to get Tensorflow Models and modify our environment to run Promachos:  
+
+
+Run:   
+
 ```
 git clone --recurse-submodules https://github.com/tensorflow/models.git
 ```
-The environment needs to be modified in order to call the tensorflow models for object detection
-```
-sudo nano ~/.bashrc
-```
-add the following line to end of the file
-```
-export PYTHONPATH=$PYTHONPATH:/home/pi/tensorflow1/models/research:/home/pi/tensorflow1/models/research/slim
-```
-Then, save and exit the file. This makes it so the “export PYTHONPATH” command is called every time you open a new terminal, so the PYTHONPATH variable will always be set appropriately. Close and then re-open the terminal.
 
-Now, we need to use Protoc to compile the Protocol Buffer (.proto) files used by the Object Detection API. The .proto files are located in /research/object_detection/protos, but we need to execute the command from the /research directory. Issue:
+
+Now modify your environment in order to call the tensorflow models for object detection. Theis command makes it so the “export PYTHONPATH” command is called every time you open a new terminal, so the PYTHONPATH variable will always be set appropriately.   
+
+
+Run:   
 
 ```
-cd /home/pi/models/research
+sudo vim ~/.bashrc
+```
+
+
+Add the following line to end of the file:  
+
+```
+export PYTHONPATH=$PYTHONPATH:/home/pi/tensorflow/models/research:/home/pi/tensorflow/models/research/slim
+```
+
+
+Then, save and exit the file, close and then re-open the terminal.  
+
+
+Now, we need to use Protoc to compile the Protocol Buffer (.proto) files used by the Object Detection API. The .proto files are located in `tensorflow/models/research/object_detection/protos`, but we need to execute the python program command from the `tensorflow/models/research/*` directory.
+
+
+Run:   
+
+```
+cd /home/pi/tensorflow/models/research/object_detection/
 protoc object_detection/protos/*.proto --python_out=.
 ```
 
-move Promachos.py and the rust files to the file /home/pi/models/research/object_detection
-```
-mv Promachos.py /models/research/object_detection
-mv gpio_rust /models/research/object_detection
-```
+
+Now move Promachos.py (and Rust files) to the location Promachos must be run:
+ `/home/pi/tensorflow/models/research/object_detection` 
+_NOTE: moving the entire git project file into this directory is the easiest way_
+
+
+Run:  
 
 ```
-cd models/research/object_detection
+sudo mv Promachos.py tensorflow/models/research/object_detection
+sudo mv Promachos tensorflow/models/research/object_detection
+```
+
+
+Now downlad the mscoco models to the correct location:  
+
+Run: 
+
+```
+cd tensorflow/models/research/object_detection
 wget http://download.tensorflow.org/models/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz
 tar -xzvf ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz
 ```
 
-And that's it, in order to run Promachos. 
+
+Now we need to build the rust package. I made a make file so this part is easy:  
+
+From the Promachos Project Folder Run:   
+
+```
+make clean compile-rust
+cargo run --release
+```
+
+
+Now we can finally run Promachos!
+From the `tensorflow/models/research/object_detection` folder location(The same one `Promachos.py` is currently located):  
+
+
+Run:    
+
 ```
 python3 Promachos.py
 ```
-As a default it runs a usb camera. A picamera may be used with the arguement --picam
+
+
+_NOTE: As a default it runs a usb camera. A picamera may be used instead with the arguement --picam_
+ex:    
+
 ```
 python3 Promachos.py --picam
 ```
 
+
+Example of running the program:  
+
+	$ python3 Promachos.py
+    	Running...
+    	There is an object at -12, 236 -176 from origin
+    	targeting ...
+    	There is an object at -82, 236 -189 from origin
+    	firing ...
+    	There is an object at -82, 130 -101 from origin
+    	target object not found
+    	returning home ...
+    	$
+
+
+
 ## Bugs, Defects, Failing Tests, etc  
 
-Bugs, Defects, and Failing Test information goes here as needed.  
+Bugs, Defects, and Failing Test information:
 The Raspberry Pi is quite underpowered, even with the raspi 4 with 4 gigs of ram
 The program currently lights up LED lights to indicate
 the direction in which the camera should be moving to 
@@ -152,7 +274,7 @@ reference values.
 The object origin is identified as soon as the object is recognized,
 which means that if an object is brought into the frame, it's origin
 location begins towards the edge of the frame, rather than where it
-is "placed" to begin tracking.  //Is this a bug? Expected behavior?
+is "placed" to begin tracking.  
 
 
 ## License  
@@ -164,13 +286,15 @@ software for license terms.
 
 ## Acknowledgements 
 Thanks to professor Bart Massey for project encouragement.  
+
 Thanks to Evan Juras @EdjeElectronics for his help with 
 raspberry pi - tensorflow object detection.   
+`https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi`  
 
 Thank you to Docker for their install instructions:
-https://docs.docker.com/install/linux/docker-ce/debian/
+`https://docs.docker.com/install/linux/docker-ce/debian/ ` 
 
 Thank you to Bruno Rocha for his guidance with FFI and cpython:
-https://developers.redhat.com/blog/2017/11/16/speed-python-using-rust/
+`https://developers.redhat.com/blog/2017/11/16/speed-python-using-rust/ ` 
 
 

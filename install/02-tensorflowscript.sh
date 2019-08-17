@@ -89,11 +89,10 @@ sudo pip3 install --upgrade jupyter-client
 # remove unnecessary packages
 ##time sudo apt autoremove
 
-#### THE BELOW CODE STILL DOES NOT WORK. METHOD NEEDS UPDATING AND FIXING
-#     USED PIP INSTALL INSTEAD AT THIS POINT
+####  IF THE BELOW METHOD DOESN"T WORK,
+#     USE PIP INSTALL INSTEAD AT THIS POINT
 #     script is found in 01opt-pipscript.sh
 
-# XXX --- Nonworking code between these lines
 printf "\n Cloning Tensorflow from git repository \n\n"
 date
 printf "\n"
@@ -121,8 +120,6 @@ date
 printf "\n"
 # now install tensorflow wheel
 sudo pip3 install tensorflow-1.14.0-cp34-none-linux_armv7l.whl
-
-# XXX --- Nonworking code ends here
 
 
 # Run next script:
